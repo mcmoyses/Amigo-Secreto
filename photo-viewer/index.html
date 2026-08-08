@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revelar · Visualizador de Fotos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Leitura de metadados EXIF/GPS (roda 100% no navegador) -->
+    <script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js" defer></script>
+    <!-- Mapa (OpenStreetMap, sem chave de API) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" defer></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ============ TELA INICIAL / DROP ZONE ============ -->
+    <section id="dropzone" class="dropzone">
+        <div class="dropzone__inner">
+            <p class="dropzone__eyebrow">Um visualizador diferente</p>
+            <h1 class="dropzone__title">Revelar</h1>
+            <p class="dropzone__lead">
+                Cada foto é mais do que uma imagem. Solte uma aqui e veja a história
+                que os metadados contam &mdash; câmera, lugar, hora, luz e cor.
+            </p>
+            <label class="dropzone__button">
+                Escolher uma foto
+                <input type="file" id="fileInput" accept="image/*" hidden>
+            </label>
+            <p class="dropzone__hint">ou arraste e solte &middot; nada sai do seu dispositivo</p>
+        </div>
+    </section>
+
+    <!-- ============ VISUALIZADOR ============ -->
+    <main id="viewer" class="viewer" hidden>
+        <!-- Palco da foto -->
+        <div class="stage">
+            <button class="stage__back" id="backButton" aria-label="Voltar">&larr;</button>
+            <figure class="stage__figure">
+                <img id="photo" class="stage__photo" alt="Foto em exibição">
+            </figure>
+            <button class="stage__toggle" id="panelToggle" aria-label="Ver informações">
+                <span class="stage__toggle-label">Informações</span>
+                <span class="stage__toggle-icon">&#9432;</span>
+            </button>
+        </div>
+
+        <!-- Painel editorial de metadados -->
+        <aside class="panel" id="panel">
+            <div class="panel__scroll">
+                <header class="panel__head">
+                    <p class="panel__eyebrow" id="metaPlace">&mdash;</p>
+                    <h2 class="panel__headline" id="metaHeadline">Sua foto</h2>
+                    <p class="panel__dek" id="metaDek"></p>
+                </header>
+
+                <!-- Legenda narrativa gerada a partir dos dados -->
+                <p class="panel__caption" id="metaCaption"></p>
+
+                <!-- Cores dominantes -->
+                <section class="block">
+                    <h3 class="block__title">Paleta</h3>
+                    <div class="swatches" id="metaSwatches"></div>
+                </section>
+
+                <!-- Ficha técnica -->
+                <section class="block">
+                    <h3 class="block__title">Ficha técnica</h3>
+                    <dl class="specs" id="metaSpecs"></dl>
+                </section>
+
+                <!-- Mapa -->
+                <section class="block" id="mapBlock" hidden>
+                    <h3 class="block__title">Onde</h3>
+                    <div class="map" id="map"></div>
+                    <p class="map__coords" id="metaCoords"></p>
+                </section>
+            </div>
+        </aside>
+    </main>
+
+    <script src="app.js" defer></script>
+</body>
+</html>
